@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Trait\FileUploadTrait;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -29,6 +30,7 @@ class UserController extends Controller
     use FileUploadTrait;
     public function update(Request $request)
     {
+        // dd($request);
         $id = Auth()->user()->id;
         $user = User::find($id);
 
@@ -66,5 +68,34 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function changePassword(){
+        return view('admin.profile.change-password');
+    }
+    
+    public function updatePassword(Request $request)
+    {
+        // dd($request);
+        if ($request->new_password != $request->new_password_confirmation) {
+            return redirect()->back()->with('confirmerror', 'Passwords do not match!');
+        }
+
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed'
+        ]);
+
+        // Match The Old Password
+        if (!Hash::check($request->old_password, auth()->user()->password)) {
+            return redirect()->back()->with('error', 'Incorrect current password!');
+        }
+
+        // Update only the password field
+        auth()->user()->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return redirect()->back()->with('status', 'Password changed successfully!');
     }
 }

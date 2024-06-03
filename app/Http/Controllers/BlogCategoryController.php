@@ -84,4 +84,19 @@ class BlogCategoryController extends Controller
                 ->withErrors($th->getMessage());
         }
     }
+
+    /**
+     * Active Inactive
+     */
+    public function blogCategoryInactive($id)
+    {
+        BlogCategory::findOrFail($id)->update(['status' => 0]);
+        return redirect()->route('blog-category.index');
+    }
+
+    public function blogCategoryActive($id)
+    {
+        BlogCategory::findOrFail($id)->update(['status' => 1]);
+        return redirect()->route('blog-category.index');
+    }
 }
