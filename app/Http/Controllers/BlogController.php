@@ -16,7 +16,14 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $blogs = Blog::all();
+        $user = Auth::user();
+
+        if ($user->hasRole('Author')) {
+            $blogs = Blog::where('user_id', $user->id)->get();
+        } else {
+            $blogs = Blog::all();
+        }
+
         return view('admin.blog.index', compact('blogs',));
     }
 
@@ -80,7 +87,7 @@ class BlogController extends Controller
         try {
             Blog::create([
                 'title' => $request->title,
-                'slug'=>strtolower(str_replace(' ','-',$request->title)),
+                'slug' => strtolower(str_replace(' ', '-', $request->title)),
                 'banner' => $this->uploadFile($request->banner, '/app/public/blog/banner', 350, 700),
                 'article' => $request->article,
                 'user_id' =>  Auth::id(),
@@ -98,7 +105,7 @@ class BlogController extends Controller
         }
     }
 
-    public function update(Request $request,Blog $blog)
+    public function update(Request $request, Blog $blog)
     {
         // dd($request);
         $validator = Validator::make($request->all(), [
@@ -120,7 +127,7 @@ class BlogController extends Controller
 
             $oldBannerPath = $blog->banner;
             if ($request->hasFile('banner')) {
-                $blog->banner = $this->uploadFile($request->file('banner'), '/app/public/blog/banner', 800, 400);
+                $blog->banner = $this->uploadFile($request->file('banner'), '/app/public/blog/banner', 350, 700);
 
                 if ($oldBannerPath && $oldBannerPath !== $blog->banner) {
                     Storage::delete('/app/public/blog/banner/' . $oldBannerPath);

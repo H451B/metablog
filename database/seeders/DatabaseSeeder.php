@@ -24,17 +24,21 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'user@email.com',
         // ]);
 
-        $this->call([
-            PermissionSeeder::class,
-            RoleSeeder::class,
-        ]);
+        // $this->call([
+        //     PermissionSeeder::class,
+        //     RoleSeeder::class,
+        // ]);
 
-        $admin = User::create([
-            'name' => 'Admin', 
-            'email' => 'admin@mail.com',
-            // 'username' => 'admin',
-            'password' => Hash::make('11111111')
+        // $admin = User::create([
+        //     'name' => 'Admin', 
+        //     'email' => 'admin@mail.com',
+        //     // 'username' => 'admin',
+        //     'password' => Hash::make('11111111')
+        // ]);
+        // $admin->assignRole('Admin');
+
+        $this->call([
+            BlogSeeder::class,
         ]);
-        $admin->assignRole('Admin');
     }
 }

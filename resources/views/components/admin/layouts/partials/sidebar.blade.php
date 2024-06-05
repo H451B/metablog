@@ -9,7 +9,8 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ auth()->user()->photo ? asset('storage/user/photo/' . auth()->user()->photo) : asset('ui/backend/dist/img/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                <img src="{{ auth()->user()->photo ? asset('storage/user/photo/' . auth()->user()->photo) : asset('ui/backend/dist/img/user.jpg') }}"
+                    class="img-circle elevation-2" alt="User Image">
 
 
             </div>
@@ -38,7 +39,8 @@
                 <!-- Add icons to the links using the .nav-icon class
        with font-awesome or any other icon font library -->
                 <li class="nav-item {{ request()->routeIs('dashboard.index') ? 'menu-open' : '' }}">
-                    <a href="{{ route('dashboard.index') }}" class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.index') }}"
+                        class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
@@ -59,70 +61,41 @@
                     </a>
                 </li>
                 @endcan
-                <li class="nav-item">
-                    <a href="{{route('blog.index')}}" class="nav-link">
-                        <i class="nav-icon fas fa-user-friends"></i>
-                        <p>Blog</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{route('blog-category.index')}}" class="nav-link">
-                        <i class="nav-icon fas fa-user-friends"></i>
-                        <p>Blog Category</p>
-                    </a>
-                </li>
 
-                {{-- Treeview --}}
-                {{-- <li class="nav-item">
-                        <i class="nav-icon fas fa-fire"></i>
-                        <p>
-                            A
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('roles.index')}}" class="nav-link">
-                <i class="fas fa-fire nav-icon" style="color: gray"></i>
-                <p>1</p>
-                </a>
-                </li>
-                <li class="nav-item">
+
+                <li class="nav-item {{ Str::startsWith(request()->url(), url('blog')) ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link">
-                        <i class="fas fa-fire nav-icon" style="color: gray"></i>
-                        <p>2</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
+                        <i class="nav-icon fas fa-circle"></i>
                         <p>
-                            Level 2
+                            Blog
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
+                    <ul class="nav nav-treeview ml-3">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-dot-circle nav-icon"></i>
-                                <p>Level 3</p>
+                            <a href="{{route('blog.index')}}" class="nav-link" {{ Str::startsWith(request()->url(), url('blog')) ? 'active' : '' }}>
+                                <i class="nav-icon fas fa-user-friends"></i>
+                                <p>Blog</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-dot-circle nav-icon"></i>
-                                <p>Level 3</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-dot-circle nav-icon"></i>
-                                <p>Level 3</p>
+                            <a href="{{route('blog-category.index')}}" class="nav-link" {{ Str::startsWith(request()->url(), url('blog-')) ? 'active' : '' }}>
+                                <i class="nav-icon fas fa-user-friends"></i>
+                                <p>Blog Category</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-            </ul>
-            </li> --}}
+
+                @can('subscriber-list')
+                <li class="nav-item">
+                    <a href="{{route('subscribers.index')}}" class="nav-link {{request()->routeIs('subscriber.index') ? 'active' : ''}}">
+                        <i class="nav-icon fas fa-user-friends"></i>
+                        <p>Subscriber</p>
+                    </a>
+                </li>
+                @endcan
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
